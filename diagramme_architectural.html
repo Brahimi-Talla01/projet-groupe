@@ -96,11 +96,12 @@
             transition: all 0.3s ease;
             position: relative;
             overflow: hidden;
+            margin-top: 15px;
         }
         
         .service:hover {
             border-color: #3498db;
-            transform: scale(1.02);
+            transform: scale(1);
         }
         
         .service::before {
@@ -125,6 +126,62 @@
             font-size: 0.9em;
             line-height: 1.5;
         }
+
+        /* Style pour les architectures de différents MS */
+        .service-arch {
+            background: #ffffff; 
+            border-radius: 12px;
+            padding: 25px; 
+            border: 1px solid #e0e6ed; 
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            margin-top: 20px; 
+        }
+
+        .service-arch:hover {
+            transform: translateY(-3px); 
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .service-arch h1 {
+            font-size: 1em; 
+            color: #34495e; 
+            margin-bottom: 8px; 
+            border-bottom: 2px solid #3498db; 
+            padding-bottom: 5px;
+        }
+
+        .service-arch h2 {
+            font-size: 14px;
+            color: #2c3e50; 
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+        .service-arch ul {
+            list-style: none; 
+            padding-left: 0;
+        }
+
+        .service-arch ul li {
+            padding: 8px 0;
+            border-bottom: 1px dotted #ecf0f1; 
+            font-size: 0.8em;
+            color: #555;
+            position: relative;
+            padding-left: 25px; 
+        }
+
+        .service-arch ul li::before {
+            content: '✓'; 
+            color: #2ecc71; 
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+            top: 8px;
+        }
         
         .endpoints {
             margin-top: 12px;
@@ -144,13 +201,6 @@
             padding-left: 20px;
             font-size: 0.8em;
             color: #555;
-        }
-        
-        .bordered-section {
-            border: 2px solid black;
-            border-radius: 12px;
-            padding: 15px;
-            background: #f8f9fa;
         }
         
         .data-flow {
@@ -219,6 +269,15 @@
         }
         
         @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+                padding: 10px;
+            }
+            .layer {
+                border-radius: 5px;
+                padding: 10px;
+                border-left: 5px solid #3498db;
+            }
             .services-grid {
                 grid-template-columns: 1fr;
             }
@@ -319,92 +378,81 @@
             <!-- Couche Microservices -->
             <div class="layer">
                 <h3><span class="layer-icon">3</span>Couche Services Métier (Microservices avec DDD)</h3>
-                <div class="bordered-section">
-                    <div class="services-grid-horizontal">
-                        <!-- Service Matières & Programmes -->
-                        <div class="service">
-                            <h4>📚 Service Matières & Programmes</h4>
-                            <div class="service-description">
-                                Gestion des matières par filière (C, TI, F4) et système (Fr/En) avec architecture en couches DDD
-                            </div>
-                            <div class="endpoints">
-                                <strong>Couche Présentation:</strong>
-                                <ul>
-                                    <li>Contrôleurs REST: GET /subjects/list, POST /subjects/create, PUT /subjects/{id}</li>
-                                </ul>
-                                <strong>Couche Application:</strong>
-                                <ul>
-                                    <li>SubjectApplicationService, CreateSubjectUseCase</li>
-                                </ul>
-                                <strong>Couche Domaine (DDD):</strong>
-                                <ul>
-                                    <li>Aggregate Root: SubjectAggregate</li>
-                                    <li>Entities: Subject, Filiere, Coefficient</li>
-                                    <li>Value Objects: NoteScale (/20, /100)</li>
-                                    <li>Domain Service: CoefficientCalculator</li>
-                                </ul>
-                                <strong>Couche Infrastructure:</strong>
-                                <ul>
-                                    <li>PostgreSQL (SubjectRepository)</li>
-                                    <li>SQLite (OfflineSubjectRepository)</li>
-                                </ul>
-                            </div>
+                <div class="services-grid-horizontal">
+                    <!-- Service Matières & Programmes -->
+                    <div class="service">
+                        <h4>📚 Service Matières & Programmes</h4>
+                        <div class="service-description">
+                            Gestion des matières par filière (C, TI, F4) et système (Fr/En) avec architecture en couches DDD
                         </div>
-
-                        <!-- Service Notes & Bulletins -->
-                        <div class="service">
-                            <h4>🧮 Service Notes & Bulletins</h4>
-                            <div class="service-description">
-                                Cœur de la V1: saisie, calcul, validation et génération PDF avec architecture en couches DDD
-                            </div>
-                            <div class="endpoints">
-                                <strong>Couche Présentation:</strong>
-                                <ul>
-                                    <li>Contrôleurs REST: POST /grades/submit, POST /bulletins/generate, GET /bulletins/{id}/pdf</li>
-                                </ul>
-                                <strong>Couche Application:</strong>
-                                <ul>
-                                    <li>BulletinApplicationService, GradeValidationUseCase</li>
-                                </ul>
-                                <strong>Couche Domaine (DDD):</strong>
-                                <ul>
-                                    <li>Aggregate Root: BulletinAggregate</li>
-                                    <li>Entities: Bulletin, Grade, Validation</li>
-                                    <li>Value Objects: Moyenne, Rang, Appreciation</li>
-                                    <li>Domain Event: BulletinValidatedEvent</li>
-                                </ul>
-                                <strong>Couche Infrastructure:</strong>
-                                <ul>
-                                    <li>PostgreSQL (BulletinRepository)</li>
-                                    <li>PDF Generator (PdfBulletinGenerator)</li>
-                                </ul>
-                            </div>
+                        <div class="service-arch">
+                            <h1>Architecture en couches (DDD)</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Règles métier complexes (coefficients, échelles de notes)</li>
+                                <li>Modularité pour évolutions futures (nouvelles filières)</li>
+                                <li>Séparation des responsabilités</li>
+                                <li>Support offline via SQLite</li>
+                            </ul>
+                            <h2>Couches :</h2>
+                            <ul>
+                                <li><strong>Présentation</strong>: Contrôleurs REST (GET /subjects/list, POST /subjects/create)</li>
+                                <li><strong>Application</strong>: SubjectApplicationService, CreateSubjectUseCase</li>
+                                <li><strong>Domaine</strong>: SubjectAggregate, Entities (Subject, Filiere), Value Objects (NoteScale), Domain Service (CoefficientCalculator)</li>
+                                <li><strong>Infrastructure</strong>: PostgreSQL (SubjectRepository), SQLite (OfflineSubjectRepository)</li>
+                            </ul>
                         </div>
+                    </div>
 
-                        <!-- Avantages et Inconvénients -->
-                        <div class="service">
-                            <h4>⚖️ Avantages & Inconvénients</h4>
-                            <div class="service-description">
-                                Analyse de l’architecture microservices avec couches DDD pour ces services
-                            </div>
-                            <div class="endpoints">
-                                <strong>Avantages:</strong>
-                                <ul>
-                                    <li><strong>DDD Focus:</strong> Règles métier encapsulées (ex. calcul de moyenne dans BulletinAggregate).</li>
-                                    <li><strong>Séparation claire:</strong> Couches isolées facilitent maintenance et tests.</li>
-                                    <li><strong>Scalabilité:</strong> Notes & Bulletins scale indépendamment de Matières.</li>
-                                    <li><strong>Flexibilité:</strong> Support multi-tenant et personnalisation (ex. coefficients).</li>
-                                    <li><strong>Résilience:</strong> Panne d’un service n’affecte pas l’autre (ex. mode offline).</li>
-                                </ul>
-                                <strong>Inconvénients:</strong>
-                                <ul>
-                                    <li><strong>Complexité:</strong> Gestion de 4 couches par service + communication inter-services.</li>
-                                    <li><strong>Coût:</strong> Infrastructure séparée (DBs, conteneurs) augmente les coûts.</li>
-                                    <li><strong>Dépendances:</strong> Notes dépend des coefficients de Matières, risque d’erreurs.</li>
-                                    <li><strong>Latence:</strong> Appels API via Gateway peuvent ralentir (ex. validation bulletin).</li>
-                                    <li><strong>Tests:</strong> Intégration complexe pour valider interactions (ex. Domain Events).</li>
-                                </ul>
-                            </div>
+                    <!-- Service Notes & Bulletins -->
+                    <div class="service">
+                        <h4>🧮 Service Notes & Bulletins</h4>
+                        <div class="service-description">
+                            Cœur de la V1: saisie, calcul, validation et génération PDF avec architecture en couches DDD
+                        </div>
+                        <div class="service-arch">
+                            <h1>Architecture en couches (DDD)</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Logique métier critique (calcul de moyennes, validation)</li>
+                                <li>Événements de domaine pour notifications</li>
+                                <li>Scalabilité pour pics de saisie</li>
+                                <li>Génération PDF robuste</li>
+                            </ul>
+                            <h2>Couches :</h2>
+                            <ul>
+                                <li><strong>Présentation</strong>: Contrôleurs REST (POST /grades/submit, POST /bulletins/generate)</li>
+                                <li><strong>Application</strong>: BulletinApplicationService, GradeValidationUseCase</li>
+                                <li><strong>Domaine</strong>: BulletinAggregate, Entities (Bulletin, Grade), Value Objects (Moyenne, Rang), Domain Event (BulletinValidatedEvent)</li>
+                                <li><strong>Infrastructure</strong>: PostgreSQL (BulletinRepository), PDF Generator (PdfBulletinGenerator)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Avantages et Inconvénients -->
+                    <div class="service">
+                        <h4>⚖️ Avantages & Inconvénients</h4>
+                        <div class="service-description">
+                            Analyse de l’architecture microservices avec couches DDD pour ces services
+                        </div>
+                        <div class="service-arch">
+                            <h1>Architecture Microservices + DDD</h1>
+                            <h2>Avantages :</h2>
+                            <ul>
+                                <li>Encapsulation des règles métier (ex. calcul de moyenne dans BulletinAggregate)</li>
+                                <li>Séparation claire pour maintenance et tests</li>
+                                <li>Scalabilité indépendante des services</li>
+                                <li>Flexibilité pour personnalisation (ex. coefficients)</li>
+                                <li>Résilience (panne d’un service n’affecte pas l’autre)</li>
+                            </ul>
+                            <h2>Inconvénients :</h2>
+                            <ul>
+                                <li>Complexité de gestion des couches et inter-services</li>
+                                <li>Coût d’infrastructure (DBs, conteneurs)</li>
+                                <li>Dépendances (ex. Notes dépend de Matières)</li>
+                                <li>Latence potentielle via API Gateway</li>
+                                <li>Tests d’intégration complexes</li>
+                            </ul>
                         </div>
                     </div>
                 </div>
@@ -479,7 +527,7 @@
                     <div class="service">
                         <h4>💰 Service Financier</h4>
                         <div class="service-description">
-                            Gestion des frais et intégration Mobile Money
+                            Gestion des frais et intégration Mobile Money & Carte Bancaire
                         </div>
                         <div class="endpoints">
                             <strong>Paiements:</strong>
@@ -521,6 +569,17 @@
                                 <li>Templates bilingues</li>
                             </ul>
                         </div>
+                        <div class="service-arch">
+                            <h1>Architecture en couches + Cache</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Couche de présentation (UI multilingue et adaptable)</li>
+                                <li>Couche de service (logique de traduction et d'intégration des APIs)</li>
+                                <li>Couche de données (stockage des traductions et gestion de la persistance)</li>
+                                <li>Utilisation du Cache : Réponse simple, rapide à implémenter pour les requêtes fréquentes.</li>
+                                <li>Structure simple, favorisant la maintenance et l'évolution facile.</li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!-- Service Recherche -->
@@ -537,6 +596,16 @@
                                 <li>Indexation en temps réel</li>
                             </ul>
                         </div>
+                        <div class="service-arch">
+                            <h1>Architecture pilotée par les événements + Elasticsearch</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Indexation en temps réel via événements</li>
+                                <li>Découplage des sources de données</li>
+                                <li>Performance optimale pour auto-complétion</li>
+                                <li>Scalabilité horizontale</li>
+                            </ul>
+                        </div>
                     </div>
 
                     <!-- Service Statistiques -->
@@ -551,6 +620,16 @@
                                 <li>Moyennes par classe/matière</li>
                                 <li>Taux d’absentéisme</li>
                                 <li>Évolution trimestrielle</li>
+                            </ul>
+                        </div>
+                        <div class="service-arch">
+                            <h1>Architecture centrée sur les données + OLAP (ClickHouse)</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Agrégations massives de données</li>
+                                <li>OLAP et data warehousing (Online Analytical Processing)</li>
+                                <li>Tableaux de bord = extraction de données</li>
+                                <li>Performance des requêtes analytiques</li>
                             </ul>
                         </div>
                     </div>
@@ -655,7 +734,7 @@
                     <div class="tech-category">
                         <h5>Backend</h5>
                         <div class="tech-list">
-                            Java Spring Boot,<br/>
+                            Java SpringBoot,<br/>
                             Python (FastAPI),<br/>
                             RESTful APIs
                         </div>

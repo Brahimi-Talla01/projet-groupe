@@ -47,6 +47,8 @@
             border-left: 6px solid #3498db;
             box-shadow: 0 8px 25px rgba(0,0,0,0.08);
             transition: transform 0.3s ease;
+            margin-top: 30px;
+            margin-bottom: 30px;
         }
         
         .layer:hover {
@@ -82,6 +84,14 @@
             margin-top: 15px;
         }
        
+        
+        .services-grid-horizontal {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-top: 15px;
+        }
+        
         .service {
             background: white;
             border-radius: 12px;
@@ -121,7 +131,9 @@
             line-height: 1.5;
         }
 
-        /*  Style pour les architectures de différents MS */
+
+        /* Style pour les architectures de différents MS */
+
         .service-arch {
             background: #ffffff; 
             border-radius: 12px;
@@ -277,15 +289,15 @@
             .services-grid {
                 grid-template-columns: 1fr;
             }
-            
+            .services-grid-horizontal {
+                grid-template-columns: 1fr;
+            }
             .flow-steps {
                 flex-direction: column;
             }
-            
             .tech-stack {
                 grid-template-columns: 1fr;
             }
-            
             .title {
                 font-size: 1.8em;
             }
@@ -373,8 +385,89 @@
 
             <!-- Couche Microservices -->
             <div class="layer">
-                <h3><span class="layer-icon">3</span>Couche Services Métier (Microservices)</h3>
+                <h3><span class="layer-icon">3</span>Couche Services Métier (Microservices avec DDD)</h3>
+                <div class="services-grid-horizontal">
+                    <!-- Service Matières & Programmes -->
+                    <div class="service">
+                        <h4>📚 Service Matières & Programmes</h4>
+                        <div class="service-description">
+                            Gestion des matières par filière (C, TI, F4) et système (Fr/En) avec architecture en couches DDD
+                        </div>
+                        <div class="service-arch">
+                            <h1>Architecture en couches (DDD)</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Règles métier complexes (coefficients, échelles de notes)</li>
+                                <li>Modularité pour évolutions futures (nouvelles filières)</li>
+                                <li>Séparation des responsabilités</li>
+                                <li>Support offline via SQLite</li>
+                            </ul>
+                            <h2>Couches :</h2>
+                            <ul>
+                                <li><strong>Présentation</strong>: Contrôleurs REST (GET /subjects/list, POST /subjects/create)</li>
+                                <li><strong>Application</strong>: SubjectApplicationService, CreateSubjectUseCase</li>
+                                <li><strong>Domaine</strong>: SubjectAggregate, Entities (Subject, Filiere), Value Objects (NoteScale), Domain Service (CoefficientCalculator)</li>
+                                <li><strong>Infrastructure</strong>: PostgreSQL (SubjectRepository), SQLite (OfflineSubjectRepository)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Service Notes & Bulletins -->
+                    <div class="service">
+                        <h4>🧮 Service Notes & Bulletins</h4>
+                        <div class="service-description">
+                            Cœur de la V1: saisie, calcul, validation et génération PDF avec architecture en couches DDD
+                        </div>
+                        <div class="service-arch">
+                            <h1>Architecture en couches (DDD)</h1>
+                            <h2>Justification :</h2>
+                            <ul>
+                                <li>Logique métier critique (calcul de moyennes, validation)</li>
+                                <li>Événements de domaine pour notifications</li>
+                                <li>Scalabilité pour pics de saisie</li>
+                                <li>Génération PDF robuste</li>
+                            </ul>
+                            <h2>Couches :</h2>
+                            <ul>
+                                <li><strong>Présentation</strong>: Contrôleurs REST (POST /grades/submit, POST /bulletins/generate)</li>
+                                <li><strong>Application</strong>: BulletinApplicationService, GradeValidationUseCase</li>
+                                <li><strong>Domaine</strong>: BulletinAggregate, Entities (Bulletin, Grade), Value Objects (Moyenne, Rang), Domain Event (BulletinValidatedEvent)</li>
+                                <li><strong>Infrastructure</strong>: PostgreSQL (BulletinRepository), PDF Generator (PdfBulletinGenerator)</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Avantages et Inconvénients -->
+                    <div class="service">
+                        <h4>⚖️ Avantages & Inconvénients</h4>
+                        <div class="service-description">
+                            Analyse de l’architecture microservices avec couches DDD pour ces services
+                        </div>
+                        <div class="service-arch">
+                            <h1>Architecture Microservices + DDD</h1>
+                            <h2>Avantages :</h2>
+                            <ul>
+                                <li>Encapsulation des règles métier (ex. calcul de moyenne dans BulletinAggregate)</li>
+                                <li>Séparation claire pour maintenance et tests</li>
+                                <li>Scalabilité indépendante des services</li>
+                                <li>Flexibilité pour personnalisation (ex. coefficients)</li>
+                                <li>Résilience (panne d’un service n’affecte pas l’autre)</li>
+                            </ul>
+                            <h2>Inconvénients :</h2>
+                            <ul>
+                                <li>Complexité de gestion des couches et inter-services</li>
+                                <li>Coût d’infrastructure (DBs, conteneurs)</li>
+                                <li>Dépendances (ex. Notes dépend de Matières)</li>
+                                <li>Latence potentielle via API Gateway</li>
+                                <li>Tests d’intégration complexes</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Autres services dans une grille séparée -->
                 <div class="services-grid">
+                    <!-- Service Authentification -->
                     <div class="service">
                         <h4>🔑 Service Authentification</h4>
                         <div class="service-description">
@@ -390,6 +483,7 @@
                         </div>
                     </div>
                     
+                    <!-- Service Utilisateur -->
                     <div class="service">
                         <h4>👤 Service Utilisateur</h4>
                         <div class="service-description">
@@ -405,6 +499,7 @@
                         </div>
                     </div>
 
+                    <!-- Service Inscriptions & Classes -->
                     <div class="service">
                         <h4>🏫 Service Inscriptions & Classes</h4>
                         <div class="service-description">
@@ -420,36 +515,7 @@
                         </div>
                     </div>
 
-                    <div class="service">
-                        <h4>📚 Service Matières & Programmes</h4>
-                        <div class="service-description">
-                            Gestion des matières par filière (C, TI, F4) et système (Fr/En)
-                        </div>
-                        <div class="endpoints">
-                            <strong>Spécificités:</strong>
-                            <ul>
-                                <li>Notes /20 ou /100</li>
-                                <li>Coefficients paramétrables</li>
-                                <li>Programmes officiels</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <div class="service">
-                        <h4>🧮 Service Notes & Bulletins</h4>
-                        <div class="service-description">
-                            Cœur de la V1 : saisie, calcul, génération PDF
-                        </div>
-                        <div class="endpoints">
-                            <strong>Workflow:</strong>
-                            <ul>
-                                <li>Saisie → Validation → Génération</li>
-                                <li>Moyenne, rang, appréciation</li>
-                                <li>Blocage si impayé</li>
-                            </ul>
-                        </div>
-                    </div>
-
+                    <!-- Service Discipline -->
                     <div class="service">
                         <h4>⚖ Service Discipline</h4>
                         <div class="service-description">
@@ -465,6 +531,7 @@
                         </div>
                     </div>
 
+                    <!-- Service Financier -->
                     <div class="service">
                         <h4>💰 Service Financier</h4>
                         <div class="service-description">
@@ -480,6 +547,7 @@
                         </div>
                     </div>
 
+                    <!-- Service Fichiers -->
                     <div class="service">
                         <h4>🗃 Service Fichiers</h4>
                         <div class="service-description">
@@ -495,6 +563,7 @@
                         </div>
                     </div>
 
+                    <!-- Service Internationalisation -->
                     <div class="service">
                         <h4>🌐 Service Internationalisation</h4>
                         <div class="service-description">
@@ -511,9 +580,7 @@
                         <!-- Ajout de l'architecture pour ce microservice et justification -->
                         <div class="service-arch">
                             <h1>Architecture en couches + Cache</h1>
-                            
                             <h2>Justification :</h2>
-                            
                             <ul>
                                 <li>Couche de présentation (UI multilingue et adaptable)</li>
                                 <li>Couche de service (logique de traduction et d'intégration des APIs)</li>
@@ -524,6 +591,7 @@
                         </div>
                     </div>
 
+                    <!-- Service Recherche -->
                     <div class="service">
                         <h4>🔍 Service Recherche</h4>
                         <div class="service-description">
@@ -552,6 +620,7 @@
                         </div>
                     </div>
 
+                    <!-- Service Statistiques -->
                     <div class="service">
                         <h4>📈 Service Statistiques</h4>
                         <div class="service-description">
@@ -577,9 +646,9 @@
                                 <li>Tableaux de bord = extraction de données </li>
                                 <li>Performance des requêtes analytiques  </li>
                             </ul>
+
                         </div>
                     </div>
-                </div>
             </div>
 
             <!-- Couche Données -->
@@ -680,8 +749,8 @@
                     <div class="tech-category">
                         <h5>Backend</h5>
                         <div class="tech-list">
-                            Java SprintBoot,<br/>
-                            Python (FastAPI ),<br/>
+                            Java SpringBoot,<br/>
+                            Python (FastAPI),<br/>
                             RESTful APIs
                         </div>
                     </div>
